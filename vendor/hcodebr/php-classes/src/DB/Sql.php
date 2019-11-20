@@ -21,7 +21,6 @@ class Sql {
 		);
 
 	}
-
 	private function setParams($statement, $parameters = array())
 	{
 
@@ -32,14 +31,12 @@ class Sql {
 		}
 
 	}
-
 	private function bindParam($statement, $key, $value)
 	{
 
 		$statement->bindParam($key, $value);
 
 	}
-
 	public function query($rawQuery, $params = array())
 	{
 
@@ -50,7 +47,6 @@ class Sql {
 		$stmt->execute();
 
 	}
-
 	public function select($rawQuery, $params = array()):array
 	{
 
