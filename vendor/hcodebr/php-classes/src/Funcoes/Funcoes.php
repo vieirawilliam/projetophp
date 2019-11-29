@@ -9,10 +9,10 @@
         public function codIF($texto):string
         {
             # code...
-            $n=0;
-            $this->senha="";
+        $n=0;
+        $this->senha="";
 
-            for ($n = strlen($texto) - 1 ; $n >= 0 ; $n--) {
+        for ($n = strlen($texto) - 1 ; $n >= 0 ; $n--) {
                 $this->senha .= chr(ord(substr($texto,$n,1))-20); 
             }
             return $this->senha;
