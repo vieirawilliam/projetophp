@@ -80,16 +80,15 @@ class User extends Model
 
         $codif =  new Funcoes();
 
-        $password = $codif->codIF(getdespassword());
+        $password = $codif->codIF(strtoupper($this->getdespassword()));
 
-    
         $results = $sql->select("call sp_users_save(:desperson,:deslogin,:despassword,:desemail,:nrphone,:inadmin)", array(
-            ":desperson" => $this->getdesperson(),
-            ":deslogin" => $this->getdeslogin(),
+            ":desperson" => strtoupper($this->getdesperson()),
+            ":deslogin" => strtoupper($this->getdeslogin()),
             ":despassword" => $password,
-            ":desemail" => $this->getdesemail(),
-            ":nrphone" => $this->getnrphone(),
-            ":inadmin" => $this->getinadmin()
+            ":desemail" => strtoupper($this->getdesemail()),
+            ":nrphone" => strtoupper($this->getnrphone()),
+            ":inadmin" =>strtoupper( $this->getinadmin())
         ));
 
         $this->setData($results[0]);
@@ -111,14 +110,18 @@ class User extends Model
     {
         $sql = new Sql();
 
+        $codif =  new Funcoes();
+
+        $password = $codif->codIF(strtoupper($this->getdespassword()));
+
         $results = $sql->select("call sp_usersupdate_save(:iduser,:desperson,:deslogin,:despassword,:desemail,:nrphone,:inadmin)", array(
-            ":iduser" => $this->getiduser(),
-            ":desperson" => $this->getdesperson(),
-            ":deslogin" => $this->getdeslogin(),
-            ":despassword" => $this->getdespassword(),
-            ":desemail" => $this->getdesemail(),
-            ":nrphone" => $this->getnrphone(),
-            ":inadmin" => $this->getinadmin()
+            ":iduser" => strtoupper($this->getiduser()),
+            ":desperson" => strtoupper($this->getdesperson()),
+            ":deslogin" => strtoupper($this->getdeslogin()),
+            ":despassword" => $password,
+            ":desemail" => strtoupper($this->getdesemail()),
+            ":nrphone" => strtoupper($this->getnrphone()),
+            ":inadmin" => strtoupper($this->getinadmin())
         ));
 
         $this->setData($results[0]);
@@ -215,7 +218,6 @@ class User extends Model
         }
         
     }
-
     public static function  setForgotUsed($idrecovery){
 
         $sql = new Sql();
@@ -226,7 +228,6 @@ class User extends Model
         ));
 
     }
-
     public function setPassword($password){
 
         $sql = new Sql();
