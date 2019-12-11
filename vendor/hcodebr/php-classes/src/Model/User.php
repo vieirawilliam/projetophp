@@ -8,6 +8,7 @@ use \Hcode\Funcoes\Funcoes;
 use Hcode\Mailer;
 use \Hcode\Model;
 
+
 class User extends Model
 {
 
