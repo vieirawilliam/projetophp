@@ -1,12 +1,18 @@
 <?php
 
 use Hcode\Page;
-use hcode\Model\Category;
+use Hcode\Model\Category;
+use Hcode\Model\Product;
 
 //ROTA DA PAGINA PRINCIPAL
 $app->get('/', function() {
+	
+	$products = Product::listAll();
 	$page = new Page();
-	$page->setTpl("index");
+	$page->setTpl("index", [
+		'products'=>Product::checkList($products)
+	]);
+
 });
 
 #ROTA PARA ACESSAR A CATEGORIA
@@ -23,3 +29,5 @@ $app->get("/categories/:idcategory", function($idcategory){
 	]);
 
 });
+
+

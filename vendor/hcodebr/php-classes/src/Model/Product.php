@@ -8,13 +8,22 @@ use \Hcode\Model;
 
 class Product extends Model
 {
-    
     public static function listAll()
     {
         $sql = new Sql();
 
         return  $sql->select("Select * from tb_products order by desproduct");
     }
+    public static function checkList($list)
+	{
+		foreach ($list as &$row) {
+			
+			$p = new Product();
+			$p->setData($row);
+			$row = $p->getValues();
+		}
+		return $list;
+	}
     public function save()
     {
 
@@ -58,7 +67,6 @@ class Product extends Model
         ]);
 
     }
-
     public function checkPhoto(){
 
         if (file_exists(
@@ -75,7 +83,6 @@ class Product extends Model
 		}
 		return $this->setdesphoto($url);
     }
-
     public function getValues()
     {
         $this->checkPhoto();
@@ -84,7 +91,6 @@ class Product extends Model
 
         return $values;
     }
-
     public function setPhoto($file)
 	{
 		$extension = explode('.', $file['name']);
@@ -111,6 +117,5 @@ class Product extends Model
 		imagedestroy($image);
 		$this->checkPhoto();
 	}
-
     
 }
