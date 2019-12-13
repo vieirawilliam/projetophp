@@ -5,13 +5,14 @@ session_start();
 require_once("vendor/autoload.php");
 
 use \Slim\Slim;
+use Hcode\Funcoes;
 
 $app = new Slim();
 
 $app->config('debug', true);
 
 
-require_once("vendor/hcodebr/php-classes/src/Funcoes/Funcoes.php");
+require_once("vendor/hcodebr/php-classes/src/Funcoes/funcoes.php");
 require_once("site.php");
 require_once("admin-login.php");
 require_once("admin-users.php");

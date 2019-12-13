@@ -1,3 +1,4 @@
+
 <div class="slider-area">
     <!-- Slider -->
     <div class="block-slider block-slider4">
@@ -97,8 +98,7 @@
                         <h2><a href="/products/{$value.desurl}">{$value.desproduct}</a></h2>
                         
                         <div class="product-carousel-price">
-                            
-                            <ins>R${function="formatPrice($value.vlprice)"}</ins>
+                            <ins>R${function="Funcoes::formatPrice($value.vlprice)"}</ins>
                         </div> 
                     </div>
                     {/loop}

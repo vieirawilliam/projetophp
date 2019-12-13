@@ -2,7 +2,6 @@
 
 namespace Hcode\Model;
 
-use Exception;
 use \Hcode\DB\Sql;
 use \Hcode\Funcoes\Funcoes;
 use Hcode\Mailer;

@@ -1,1 +1,1 @@
-<?php if(!class_exists('Rain\Tpl')){exit;}?><li><a href="/categories/5">BOLACHAS</a></li><li><a href="/categories/4">CARNES</a></li><li><a href="/categories/1">CERVEJAS PURO MALTE</a></li>
+<?php if(!class_exists('Rain\Tpl')){exit;}?><li><a href="/categories/6">FONES DE OUVIDO</a></li><li><a href="/categories/9">NOTEBOOKS</a></li><li><a href="/categories/7">SMARTFONES</a></li><li><a href="/categories/8">SMARTV</a></li>

@@ -18,7 +18,6 @@ class Funcoes
         }
         return $this->senha;
     }
-
     #FUNÇÃO DE DESCODIFICAR SENHA
     public function decodIF($texto): string
     {
@@ -31,13 +30,14 @@ class Funcoes
         }
         return $this->senha;
     }
-
     #FUNÇÃO PARA CORRIGIR VALOR
-    function formatPrice(float $vlprice){
+    public function formatPrice(float $vlprice){
 
         return number_format($vlprice, 2, ",",".");
-        
     }
 }
+
+
+
 
  
