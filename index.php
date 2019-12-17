@@ -5,12 +5,11 @@ session_start();
 require_once("vendor/autoload.php");
 
 use \Slim\Slim;
-use Hcode\Funcoes;
+use \Hcode\Funcoes\Funcoes;
 
 $app = new Slim();
 
 $app->config('debug', true);
-
 
 require_once("vendor/hcodebr/php-classes/src/Funcoes/funcoes.php");
 require_once("site.php");
