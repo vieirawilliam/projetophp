@@ -30,11 +30,7 @@ class Funcoes
         }
         return $this->senha;
     }
-    #FUNÇÃO PARA CORRIGIR VALOR
-    public function formatPrice(float $vlprice){
-
-        return number_format($vlprice, 2, ",",".");
-    }
+    
 }
 
 

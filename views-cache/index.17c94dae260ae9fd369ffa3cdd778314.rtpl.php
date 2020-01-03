@@ -98,7 +98,7 @@
                         <h2><a href="/products/<?php echo htmlspecialchars( $value1["desurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a></h2>
                         
                         <div class="product-carousel-price">
-                            <ins>R$<?php echo htmlspecialchars( $value1["vlprice"], ENT_COMPAT, 'UTF-8', FALSE ); ?></ins>
+                            <ins>R$<?php echo FunctionHTML::formatPrice($value1["vlprice"]); ?></ins>
                         </div> 
                     </div>
                     <?php } ?>
