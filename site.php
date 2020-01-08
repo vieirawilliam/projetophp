@@ -56,10 +56,54 @@ $app->get("/products/:desurl", function($desurl){
 
 #ROTA PARA CARRINHO DE COMPRAS
 $app->get("/cart", function(){
+	$cart = Cart::getFromSession();
+	$page = new Page();
+	$page->setTpl("cart", [
+		'cart'=>$cart->getValues(),
+		'products'=>$cart->getProducts()
+	]);
+});
+
+#ROTA PARA ADICIONA PRODUTOS CARRINHOS
+$app->get("/cart/:idproduct/add", function($idproduct){
 	
+	$product = new Product();
+	$product->get((int)$idproduct);
+
 	$cart = Cart::getFromSession();
 	
-	$page = new Page();
+	$qtd = (isset($_GET['qtd'])) ? (int)$_GET['qtd'] : 1;
+	
+	for($i = 0; $i < $qtd; $i++){
+		$cart->addProduct($product);
+	}
 
-	$page->setTpl("cart");
+	header("Location: /cart");
+	exit;
+});
+
+#ROTA PARA REMOVE ONE PRODUTOS CARRINHOS
+$app->get("/cart/:idproduct/minus", function($idproduct){
+	
+	$product = new Product();
+	$product->get((int)$idproduct);
+
+	$cart = Cart::getFromSession();
+	$cart->removeProduct($product);
+
+	header("Location: /cart");
+	exit;
+});
+
+#ROTA PARA REMOVE ALL PRODUTOS CARRINHOS
+$app->get("/cart/:idproduct/remove", function($idproduct){
+	
+	$product = new Product();
+	$product->get((int)$idproduct);
+
+	$cart = Cart::getFromSession();
+	$cart->removeProduct($product, true);
+
+	header("Location: /cart");
+	exit;
 });
