@@ -14,6 +14,9 @@ class User extends Model
     const SESSION = "User";
     const SECRET = "HcodePhp7_Secret";
     const SECRET_IV = "HcodePhp7_Secret_IV";
+    const ERROR = "UserError";
+	const ERROR_REGISTER = "UserErrorRegister";
+	const SUCCESS = "UserSucesss";
 
     public static function getFromSession()
 	{
@@ -50,7 +53,7 @@ class User extends Model
         $sql = new Sql();
         $descSenha = new Funcoes();
 
-        $results = $sql->select("select * from tb_users where deslogin = :LOGIN", array(
+        $results = $sql->select("select t.*, p.desperson from tb_users as t inner join tb_persons as p using(idperson) where deslogin = :LOGIN", array(
             ":LOGIN" => $login
         ));
 
@@ -79,7 +82,8 @@ class User extends Model
         if (!User::checkLogin($inadmin)) {
 			if ($inadmin) {
 				header("Location: /admin/login");
-			} else {
+            
+            } else {
 				header("Location: /login");
 			}
 			exit;
@@ -94,7 +98,7 @@ class User extends Model
     {
         $sql = new Sql();
 
-        return  $sql->select("Select * from tb_users a inner join tb_persons b using(idperson) order by b.desperson");
+        return  $sql->select("Select *, b.desperson from tb_users a inner join tb_persons b using(idperson) order by b.desperson");
     }
     public function save()
     {
@@ -121,7 +125,7 @@ class User extends Model
         $sql = new Sql();
 
         $results = $sql->select(
-            "Select * from tb_users a inner join tb_persons b using(idperson) where a.iduser=:iduser",
+            "Select *, b.desperson from tb_users a inner join tb_persons b using(idperson) where a.iduser=:iduser",
             array(
                 ":iduser" => $iduser
             )
@@ -260,5 +264,34 @@ class User extends Model
             ":iduser"=>$this->getiduser()
         ));
     }
+    public static function setError($msg)
+	{
+		$_SESSION[User::ERROR] = $msg;
+	}
+	public static function getError()
+	{
+		$msg = (isset($_SESSION[User::ERROR]) && $_SESSION[User::ERROR]) ? $_SESSION[User::ERROR] : '';
+		User::clearError();
+		return $msg;
+	}
+	public static function clearError()
+	{
+		$_SESSION[User::ERROR] = NULL;
+    }
+
+    public static function setErrorRegister($msg)
+	{
+		$_SESSION[User::ERROR_REGISTER] = $msg;
+	}
+	public static function getErrorRegister()
+	{
+		$msg = (isset($_SESSION[User::ERROR_REGISTER]) && $_SESSION[User::ERROR_REGISTER]) ? $_SESSION[User::ERROR_REGISTER] : '';
+		User::clearErrorRegister();
+		return $msg;
+	}
+	public static function clearErrorRegister()
+	{
+		$_SESSION[User::ERROR_REGISTER] = NULL;
+	}
 
 }

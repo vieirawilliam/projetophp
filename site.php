@@ -5,6 +5,8 @@ use Hcode\Model\Category;
 use Hcode\Model\Product;
 use \Hcode\Funcoes\Funcoes;
 use Hcode\Model\Cart;
+use Hcode\Model\User;
+use Hcode\Model\Address;
 
 //ROTA DA PAGINA PRINCIPAL
 $app->get('/', function() {
@@ -115,5 +117,75 @@ $app->post("/cart/freight", function(){
 	$cart = Cart::getFromSession();
 	$cart->setFreight($_POST['zipcode']);
 	header("Location: /cart");
+	exit;
+});
+
+#ROTA PARA CALCULAR FRETE
+$app->post("/cart/freight", function(){
+	
+	$cart = Cart::getFromSession();
+	$cart->setFreight($_POST['zipcode']);
+	header("Location: /cart");
+	exit;
+});
+
+#ROTA PARA LOGIN DE USUARIO DO SITE
+$app->get("/checkout", function(){
+	
+	User::verifyLogin(false);
+	
+	$address = new Address();
+	$cart = Cart::getFromSession();
+	if (!isset($_GET['zipcode'])) {
+		$_GET['zipcode'] = $cart->getdeszipcode();
+	}
+	if (isset($_GET['zipcode'])) {
+		$address->loadFromCEP($_GET['zipcode']);
+		$cart->setdeszipcode($_GET['zipcode']);
+		$cart->save();
+		$cart->getCalculateTotal();
+	}
+	if (!$address->getdesaddress()) $address->setdesaddress('');
+	if (!$address->getdesnumber()) $address->setdesnumber('');
+	if (!$address->getdescomplement()) $address->setdescomplement('');
+	if (!$address->getdesdistrict()) $address->setdesdistrict('');
+	if (!$address->getdescity()) $address->setdescity('');
+	if (!$address->getdesstate()) $address->setdesstate('');
+	if (!$address->getdescountry()) $address->setdescountry('');
+	if (!$address->getdeszipcode()) $address->setdeszipcode('');
+	$page = new Page();
+	$page->setTpl("checkout", [
+		'cart'=>$cart->getValues(),
+		'address'=>$address->getValues(),
+		'products'=>$cart->getProducts(),
+		'error'=>Address::getMsgError()
+	]);
+});
+
+#ROTA LOGIN DO SITE
+$app->get("/login", function(){
+	$page = new Page();
+	$page->setTpl("login", [
+		'error'=>User::getError(),
+		'errorRegister'=>User::getErrorRegister(),
+		'registerValues'=>(isset($_SESSION['registerValues'])) ? $_SESSION['registerValues'] : ['name'=>'', 'email'=>'', 'phone'=>'']
+	]);
+});
+
+#ROTA LOGIN DO SITE VIA POST
+$app->post("/login", function(){
+	try {
+		User::login($_POST['login'], $_POST['password']);
+	} catch(Exception $e) {
+		User::setError($e->getMessage());
+	}
+	header("Location: /checkout");
+	exit;
+});
+
+#ROTA DE LOGOUT DO SITE
+$app->get("/logout", function(){
+	User::logout();
+	header("Location: /login");
 	exit;
 });
