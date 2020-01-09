@@ -75,7 +75,7 @@ class User extends Model
         } else {
             throw new \Exception("Senha invalida");
         }
-    }
+    }   
     public static function verifyLogin($inadmin = true)
     {
 
@@ -292,6 +292,15 @@ class User extends Model
 	public static function clearErrorRegister()
 	{
 		$_SESSION[User::ERROR_REGISTER] = NULL;
+    }
+    public static function checkLoginExist($email)
+	{
+		$sql = new Sql();
+		$results = $sql->select("SELECT p.*, u.* FROM db_ecommerce.tb_persons as p
+            inner join db_ecommerce.tb_users as u using(idperson) where p.desemail = :desemail", [
+			':desemail'=>$email
+		]);
+		return (count($results) > 0);
 	}
 
 }
