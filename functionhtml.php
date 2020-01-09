@@ -6,7 +6,7 @@ use \Hcode\Model\Cart;
 class FunctionHTML
 {
 
-    public function formatPrice(float $vlprice)
+    public function formatPrice($vlprice)
     {
 
         if (!$vlprice > 0) $vlprice = 0;

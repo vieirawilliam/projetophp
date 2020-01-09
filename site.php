@@ -231,3 +231,56 @@ $app->post("/register", function(){
 	header('Location: /checkout');
 	exit;
 });
+
+#ROTA GER PARA O FORGOT
+$app->get("/forgot", function() {
+	$page = new Page();
+	$page->setTpl("forgot");
+});
+
+#ROTA POST PARA O FORGOT
+$app->post("/forgot",function(){
+	$user = User::getForgot($_POST["email"],false);
+
+	header("Location: /forgot/sent");
+	exit;
+});
+
+#ROTA GER PARA O FORGOT
+$app->get("/forgot/sent", function() {
+	$page = new Page();
+	$page->setTpl("forgot-sent");
+});
+
+#ROTA GET DE RESET PARA O FORGOT
+$app->get("/forgot/reset", function() {
+	
+	$user = User::validForgotDecrypt($_GET["code"]);
+	
+	$page = new Page();
+	$page->setTpl("forgot-reset",array(
+		"name"=>$user["desperson"],
+		"code"=>$_GET["code"]
+	));
+});
+
+#ROTA POST ALTERA SENHA FORGOT
+$app->post("/forgot/reset", function(){
+	$forgot = User::validForgotDecrypt($_POST["code"]);
+
+	User::setForgotUsed($forgot["idrecovery"]);
+
+	$user = new User();
+
+	$user->get((int)$forgot["iduser"]);
+
+	$codif = new Funcoes();
+
+	$password = $codif->codIF(strtoupper($_POST["password"]));
+
+	$user->setPassword($password);
+
+	$page = new Page();
+	$page->setTpl("forgot-reset-success");
+
+});
