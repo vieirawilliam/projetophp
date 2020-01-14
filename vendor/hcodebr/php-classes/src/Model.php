@@ -27,7 +27,15 @@ class Model
     public function setData($data = array())
     {
         foreach ($data as $key => $value) {
-            $this->{"set" .$key}(strtoupper($value));
+            
+            if (is_array($value))
+            {
+                $this->{"set" .$key}($value);
+            }else{
+                $this->{"set" .$key}(strtoupper($value));
+            }
+            
+            
         }
     }
     public function getValues()
