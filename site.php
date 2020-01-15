@@ -199,6 +199,8 @@ $app->post("/checkout", function(){
 	}
 	$user = User::getFromSession();
 	$address = new Address();
+	
+	$_POST['idaddress'] = User::getAddress($user->getidperson());
 	$_POST['deszipcode'] = $_POST['zipcode'];
 	$_POST['idperson'] = $user->getidperson();
 	
@@ -469,4 +471,30 @@ $app->get("/boleto/:idorder", function($idorder){
 	$path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "boletophp" . DIRECTORY_SEPARATOR . "include" . DIRECTORY_SEPARATOR;
 	require_once($path . "funcoes_itau.php");
 	require_once($path . "layout_itau.php");
+});
+
+#ROTA PARA PEDIDO DO USUARIO
+$app->get("/profile/orders", function(){
+	User::verifyLogin(false);
+	$user = User::getFromSession();
+	$page = new Page();
+	$page->setTpl("profile-orders", [
+		'orders'=>$user->getOrders()
+	]);
+});
+
+#ROTA PARA ACESSAR UM DETERMINADO PEDIDO
+$app->get("/profile/orders/:idorder", function($idorder){
+	User::verifyLogin(false);
+	$order = new Order();
+	$order->get((int)$idorder);
+	$cart = new Cart();
+	$cart->get((int)$order->getidcart());
+	$cart->getCalculateTotal();
+	$page = new Page();
+	$page->setTpl("profile-orders-detail", [
+		'order'=>$order->getValues(),
+		'cart'=>$cart->getValues(),
+		'products'=>$cart->getProducts()
+	]);	
 });

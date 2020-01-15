@@ -36,7 +36,8 @@ class FunctionHTML
     public function getCartVlSubTotal()
     {
         $cart = Cart::getFromSession();
-        $totals = $cart->getProductsTotals();
-        return $this->formatPrice($totals['vlprice']);
+        $totals = $cart->getProductsTotals();     
+
+        return $totals['vlprice'];
     }
 }
