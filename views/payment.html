@@ -5,8 +5,9 @@
             <div class="col-md-12">
                 
                 <h1>Pagamento N°{$order.idorder}</h1>
-
+                
                 <button type="submit" id="btn-print" class="button alt" style="margin-bottom:10px">Imprimir</button>
+                <button type="submit" id="btn-voltar" class="button alt" style="margin-bottom:10px">Voltar</button>
 
                 <iframe src="/boleto/{$order.idorder}" name="boleto" frameborder="0" style="width:100%; min-height:1000px; border:1px solid #CCC; padding:20px;"></iframe>
 
@@ -19,8 +20,13 @@
                     window.frames["boleto"].print();
 
                 });                
+                
+                document.querySelector("#btn-voltar").addEventListener("click", function(event){
+                event.preventDefault();
+                window.location.href = "../profile";    
+                });
+                
                 </script>
-
             </div>
         </div>
     </div>

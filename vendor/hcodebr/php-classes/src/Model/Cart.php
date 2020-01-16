@@ -43,12 +43,14 @@ class Cart extends Model
 	public function getFromSessionID()
 	{
 		$sql = new Sql();
-		$results = $sql->select("SELECT * FROM tb_carts WHERE dessessionid = :dessessionid", [
-			':dessessionid' => session_id()
-		]);
-		if (count($results) > 0) {
-			$this->setData($results[0]);
-		}
+		if (isset($_SESSION[Cart::SESSION]) && (int) $_SESSION[Cart::SESSION]['idcart'] > 0) {
+			$results = $sql->select("SELECT * FROM tb_carts WHERE dessessionid = :dessessionid", [
+				':dessessionid' => $_SESSION[Cart::SESSION]['idcart']
+			]);
+			if (count($results) > 0) {
+				$this->setData($results[0]);
+			}
+		}		
 	}
 	public function get(int $idcart)
 	{
@@ -214,6 +216,7 @@ class Cart extends Model
 	}
 	public function getValues()
 	{
+		
 		$this->getCalculateTotal();
 		return parent::getValues();
 	}

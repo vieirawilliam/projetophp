@@ -92,6 +92,7 @@ class User extends Model
     {
 
         $_SESSION[User::SESSION] = NULL;
+        $_SESSION[Cart::SESSION] = NULL;
     }
     public static function listAll()
     {
@@ -161,7 +162,6 @@ class User extends Model
             ":iduser" => $this->getiduser()
         ));
     }
-
     public static function getAddress($idperson){
         $sql = new Sql();
 
@@ -178,7 +178,6 @@ class User extends Model
             return $data["idaddress"];
         }  
     }
-
     public static function getForgot($email, $inadmin = true)
     {
 

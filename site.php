@@ -60,7 +60,9 @@ $app->get("/products/:desurl", function($desurl){
 
 #ROTA PARA CARRINHO DE COMPRAS
 $app->get("/cart", function(){
+	
 	$cart = Cart::getFromSession();
+
 	$page = new Page();
 	$page->setTpl("cart", [
 		'cart'=>$cart->getValues(),
@@ -227,7 +229,7 @@ $app->post("/checkout", function(){
 	#	header("Location: /order/".$order->getidorder()."/paypal");
 	#	break;
 	#}
-
+	$_SESSION[Cart::SESSION] = NULL;	
 	header("Location: /order/".$order->getidorder());
 	
 	exit;
