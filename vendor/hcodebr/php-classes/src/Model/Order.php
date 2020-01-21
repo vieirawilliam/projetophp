@@ -123,7 +123,9 @@ class Order extends Model {
 	public static function getPageSearch($search, $page = 1, $itemsPerPage = 10)
 	{
 		$start = ($page - 1) * $itemsPerPage;
+
 		$sql = new Sql();
+
 		$results = $sql->select("
 			SELECT SQL_CALC_FOUND_ROWS *
 			FROM tb_orders a 
@@ -139,12 +141,15 @@ class Order extends Model {
 			':search'=>'%'.$search.'%',
 			':id'=>$search
 		]);
+
 		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
+
 		return [
 			'data'=>$results,
 			'total'=>(int)$resultTotal[0]["nrtotal"],
 			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
 	}
+	
 }
 ?>

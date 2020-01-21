@@ -96,9 +96,7 @@ $app->post("/admin/forgot/reset", function(){
 	$user->get((int)$forgot["iduser"]);
 
 	$codif = new Funcoes();
-
 	$password = $codif->codIF(strtoupper($_POST["password"]));
-
 	$user->setPassword($password);
 
 	$page = new PageAdmin(
