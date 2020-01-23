@@ -22,9 +22,12 @@ class User extends Model
     {
         $user = new User();
         if (isset($_SESSION[User::SESSION]) && (int) $_SESSION[User::SESSION]['iduser'] > 0) {
-            $user->setData($_SESSION[User::SESSION]);
+            $user->get($_SESSION[User::SESSION]['iduser']);
+            return $user;
+        }else{
+            return $user;
         }
-        return $user;
+        
     }
     public static function checkLogin($inadmin = true)
     {
@@ -110,12 +113,12 @@ class User extends Model
         $password = $codif->codIF(strtoupper($this->getdespassword()));
 
         $results = $sql->select("call sp_users_save(:desperson,:deslogin,:despassword,:desemail,:nrphone,:inadmin)", array(
-            ":desperson" => strtoupper($this->getdesperson()),
-            ":deslogin" => strtoupper($this->getdeslogin()),
+            ":desperson" => $this->getdesperson(),
+            ":deslogin" => $this->getdeslogin(),
             ":despassword" => $password,
-            ":desemail" => strtoupper($this->getdesemail()),
-            ":nrphone" => strtoupper($this->getnrphone()),
-            ":inadmin" => strtoupper($this->getinadmin())
+            ":desemail" => $this->getdesemail(),
+            ":nrphone" => $this->getnrphone(),
+            ":inadmin" => $this->getinadmin()
         ));
 
         $this->setData($results[0]);
@@ -139,16 +142,18 @@ class User extends Model
 
         $codif =  new Funcoes();
 
-        $password = $codif->codIF(strtoupper($this->getdespassword()));
+        $senha = $this->getdespassword();
+        
+        $password = $codif->codIF($this->getdespassword());
 
         $results = $sql->select("call sp_usersupdate_save(:iduser,:desperson,:deslogin,:despassword,:desemail,:nrphone,:inadmin)", array(
-            ":iduser" => strtoupper($this->getiduser()),
-            ":desperson" => strtoupper($this->getdesperson()),
-            ":deslogin" => strtoupper($this->getdeslogin()),
+            ":iduser" => $this->getiduser(),
+            ":desperson" => $this->getdesperson(),
+            ":deslogin" => $this->getdeslogin(),
             ":despassword" => $password,
-            ":desemail" => strtoupper($this->getdesemail()),
-            ":nrphone" => strtoupper($this->getnrphone()),
-            ":inadmin" => strtoupper($this->getinadmin())
+            ":desemail" => $this->getdesemail(),
+            ":nrphone" => $this->getnrphone(),
+            ":inadmin" => $this->getinadmin()
         ));
 
         $this->setData($results[0]);

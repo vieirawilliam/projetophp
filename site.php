@@ -221,17 +221,19 @@ $app->post("/checkout", function(){
 	]);
 	
 	$order->save();
-	#switch ((int)$_POST['payment-method']) {
-	#	case 1:
-	#		header("Location: /order/".$order->getidorder()."/pagseguro");
-	#	break;
-	#	case 2:
-	#	header("Location: /order/".$order->getidorder()."/paypal");
-	#	break;
-	#}
+	switch ((int)$_POST['payment-method']) {
+		case 1:
+			header("Location: /order/".$order->getidorder()."/pagseguro");
+		break;
+		case 2:
+			header("Location: /order/".$order->getidorder()."/paypal");
+		break;
+		case 3:
+			header("Location: /order/".$order->getidorder());
+		break;
+	}
 	$_SESSION[Cart::SESSION] = NULL;	
-	header("Location: /order/".$order->getidorder());
-	
+
 	exit;
 });
 
@@ -560,4 +562,58 @@ $app->post("/profile/change-password", function(){
 	User::setSuccess("Senha alterada com sucesso.");
 	header("Location: /profile/change-password");
 	exit;
+});
+
+#ROTA PARA O PAGSEGURO
+$app->get("/order/:idorder/pagseguro", function($idorder){
+
+	User::verifyLogin(false);
+
+	$order = new Order();
+
+	$order->get((int)$idorder);
+
+	$cart = $order->getCart();
+
+	$page = new Page([
+		'header'=>false,
+		'footer'=>false
+	]);
+
+	$page->setTpl("payment-pagseguro", [
+		'order'=>$order->getValues(),
+		'cart'=>$cart->getValues(),
+		'products'=>$cart->getProducts(),
+		'phone'=>[
+			'areaCode'=>substr($order->getnrphone(), 0, 2),
+			'number'=>substr($order->getnrphone(), 2, strlen($order->getnrphone()))
+		]
+	]);
+
+
+});
+
+#ROTA PARA O PAYPAL
+$app->get("/order/:idorder/paypal", function($idorder){
+
+	User::verifyLogin(false);
+
+	$order = new Order();
+
+	$order->get((int)$idorder);
+
+	$cart = $order->getCart();
+
+	$page = new Page([
+		'header'=>false,
+		'footer'=>false
+	]);
+
+	$page->setTpl("payment-paypal", [
+		'order'=>$order->getValues(),
+		'cart'=>$cart->getValues(),
+		'products'=>$cart->getProducts()
+	]);
+
+
 });

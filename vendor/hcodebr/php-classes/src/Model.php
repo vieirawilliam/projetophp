@@ -16,7 +16,14 @@ class Model
         switch ($method) {
 
             case "get":
-                return (isset($this->values[$fieldname]))? strtoupper($this->values[$fieldname]): NULL;
+
+             
+                if($fieldname === "despassword"){
+                    return (isset($this->values[$fieldname]))? $this->values[$fieldname]: NULL;                    
+                }else{
+                    return (isset($this->values[$fieldname]))? strtoupper($this->values[$fieldname]): NULL;
+                }
+            
                 break;
 
             case "set":
@@ -32,10 +39,12 @@ class Model
             {
                 $this->{"set" .$key}($value);
             }else{
-                $this->{"set" .$key}(strtoupper($value));
+                if($key === "despassword"){
+                    $this->{"set" .$key}($value);
+                }else{
+                    $this->{"set" .$key}(strtoupper($value));
+                }
             }
-            
-            
         }
     }
     public function getValues()
